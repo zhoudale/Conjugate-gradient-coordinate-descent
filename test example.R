@@ -1,7 +1,7 @@
-
+# test example:
 # golden_sec(f_1, eps, epsm)
-
 # coordinate_des(f_3, eps, epsm)
+
 
 f_1  = function(x){
   (x-5)^2 
@@ -11,73 +11,16 @@ f_2 = function(x){
   1/(x^2 + 1) + x^2
 }
 
-f_1 = function(x){
+f_3 = function(x){
   (x[1]-2)^2 + (x[2] + 1)^2
 }
 
-g_f_3 = function(x){
+f_4 = function(x){
   c(2*(x[1]-2),2*(x[2]+1))
 }
 
-f_4 = function(x,y){
+f_5 = function(x,y){
   (x - 1)^2 + 3 * (y - x^2)^2
-}
-
-golden_r = (sqrt(5) - 1)/2
-
-######### golden section #########
-
-golden_sec = function(f, eps, epsm){
-  #initialize
-  a = rnorm(1) ; 
-  b = a; c = a; i = 0
-  f_a = f(a); f_b = f(b); f_c = f(c)
-  while(((f_c >= f_b) | (f_c >= f_a)) & (i < 500)){
-    b = b + 2^i 
-    a = a - 2^i * golden_r 
-    i = i + 1
-    f_a = f(a); f_b = f(b); f_c = f(c)
-  }
-  # golden section 
-  i = 0
-  while((abs(a - b) > (eps + epsm * abs(c))) & (i < 1000)){
-    i = i + 1;# print(c(a,b,c))
-    temp = b + a - c
-    if( f(temp) > f(c)){
-      if(temp > c){
-        b = temp
-      }else{
-        a = temp
-      }
-    }else{
-      if( temp > c){
-        a = c
-      }else{
-        b = c
-      }
-      c = temp
-    }
-  }
-  return(c(c,i))
-}
-
-########### coordinate descent ##########
-
-coordinate_des = function(f, eps,epsm){
-  a = 0; b = 0; olda = 1; oldb = 1; i = 0
- while((dist(rbind(c(a,b),c(olda,oldb))) > (eps + epsm * abs(min(a,b)))) & (i < 5000)){
-   i = i + 1
-   olda = a; oldb = b
-   f_x = function(x){
-     f(x,b)
-   }
-   a = golden_sec(f_x, eps, epsm)[1]
-   f_y = function(y){
-     f(a,y)
-   }
-   b = golden_sec(f_y, eps, epsm)[1]
- }
- return(c(a,b,i))
 }
 
 ##################### input #################
